@@ -1,4 +1,4 @@
-/* <--- Import ---> 123 */
+/* <--- Import ---> */
 
 const fs = require('fs');
 const clr = require('colors');

@@ -11,13 +11,13 @@ const realDate = require('../functions/realDate.js')
 /* <--- Event ---> */
 
 module.exports = {
-  name: 'ready',
+    name: 'ready',
 
-  execute(client) {
+    execute(client) {
 
-    /* <--- on-ready ---> */
+        /* <--- on-ready ---> */
 
-    console.log(`> ` + clr.brightCyan(`[${realDate()}]`) + ` Bot logged in successfully.\n`);
+        console.log(`> ` + clr.brightCyan(`[${realDate()}]`) + ` Bot logged in successfully.\n`);
 
-  }
+    }
 };
