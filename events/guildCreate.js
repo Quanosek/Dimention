@@ -1,24 +1,29 @@
-/* <--- Import ---> */
+/** IMPORT */
 
-const { MessageEmbed } = require('discord.js');
-const clr = require('colors');
+require('dotenv').config();
+const { PREFIX } = process.env;
 
-const config = require('../config.json');
-const realDate = require('../functions/realDate.js')
+require('colors');
 
+const realDate = require('../functions/realDate.js');
+const schema = require('../schemas/guilds.js');
 
-/* <--- Event ---> */
+/** GUILD CREATE EVENT */
 
 module.exports = {
     name: 'guildCreate',
 
-    async execute(client, guild) {
+    async run(client, guild) {
 
-        /* <--- create log ---> */
+        await schema.create({ // create db
+            guildName: guild.name,
+            guildId: guild.id,
+            prefix: PREFIX,
+        });
 
-        console.log(`> ` + clr.brightCyan(`[${realDate()}]`) + ` Guild: ${guild.name}, ${guild.id}\n>> Bot ` + clr.brightGreen(`joined`) + ` to the server!`);
+        console.log(realDate() + ` Guild: ${guild.name}, ${guild.id}`.grey + `\n >>> Bot ` + `joined`.brightGreen + ` to the server!`); // log
 
-        /* <--- welcome message ---> */
+        /** welcome message */
 
         let channelToSend;
 
@@ -31,22 +36,28 @@ module.exports = {
 
         if (channelToSend) {
 
-            return channelToSend.send({
-                embeds: [new MessageEmbed()
-                    .setColor(config.color1)
-                    .setThumbnail(config.icon)
-                    .setTitle('😄 | Cieszę się, że tu jestem!')
-                    .setDescription(`
-opis
-        `)
-                    .setFooter(`Bot stworzony przez: ${config.author}`)
-                    .setTimestamp()
-                ]
-            }).catch(err => {
-                console.error(`> ` + clr.brightCyan(`[${realDate()}]`) + ` On guildCreate: ` + clr.Red(`Failed to create welcome-message (code ${err.code})`) + `.`);
-            });
+            try {
+
+                return channelToSend.send({
+                    embeds: [new MessageEmbed()
+                        .setColor(COLOR1)
+                        .setThumbnail(ICON)
+                        .setTitle('😄 | Cieszę się, że tu jestem!')
+                        .setDescription(`
+Dziękuję za dodanie mnie na serwer!!!
+
+Moim domyślnym prefixem jest: \`${PREFIX}\`
+
+Aby dowiedzieć się więcej użyj komendy \`help\` lub odwiedź moją [stronę internetową](${WEBSITE})!
+                        `)
+                        .setFooter({ text: `Autor bota: ${AUTHOR_NAME} (${AUTHOR_NICK}#${AUTHOR_HASH})` })
+                    ],
+                });
+
+            } catch (err) {
+                if (err) console.error(` >>> ${err}`.brightRed);
+            };
 
         };
-
-    }
+    },
 };

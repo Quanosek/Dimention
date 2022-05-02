@@ -1,23 +1,22 @@
-/* <--- Import ---> */
+/** IMPORT */
 
-const ms = require('ms');
-const fetch = require('node-fetch');
-const clr = require('colors');
+require('colors');
 
-const config = require('../config.json');
-const realDate = require('../functions/realDate.js')
+const realDate = require('../functions/realDate.js');
 
-
-/* <--- Event ---> */
+/** READY EVENT */
 
 module.exports = {
     name: 'ready',
+    once: true, // only once
 
-    execute(client) {
+    async run(client) {
 
-        /* <--- on-ready ---> */
+        // on ready message
+        console.log(realDate() + ' Bot is ready!'.brightYellow);
 
-        console.log(`> ` + clr.brightCyan(`[${realDate()}]`) + ` Bot logged in successfully.\n`);
+        // bot activity
+        client.user.setActivity('/help', { type: 'PLAYING' });
 
-    }
+    },
 };
